@@ -1,5 +1,7 @@
 package com.osroyale.content.skill.impl.woodcutting;
 
+import com.osroyale.content.counter.PlayerCount;
+import com.osroyale.content.counter.PlayerCounter;
 import com.osroyale.content.prestige.PrestigePerk;
 import com.osroyale.game.world.entity.mob.player.Player;
 import com.osroyale.game.world.items.Item;
@@ -31,6 +33,7 @@ public class BirdsNest {
         if (Utility.random(1, 200) < chance) {
             Item item = new Item(Utility.randomElement(BIRD_NEST), 1);
             GroundItem.create(player, item);
+            player.playerCount.add(PlayerCount.BIRD_NESTS);
             player.send(new SendMessage("A bird's nest falls out of the tree.", MessageColor.RED));
         }
     }

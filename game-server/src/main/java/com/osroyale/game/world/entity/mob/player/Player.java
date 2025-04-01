@@ -18,6 +18,8 @@ import com.osroyale.content.collectionlog.CollectionLogPage;
 import com.osroyale.content.collectionlog.CollectionLogSaving;
 import com.osroyale.content.combat.Killstreak;
 import com.osroyale.content.combat.Skulling;
+import com.osroyale.content.counter.PlayerCount;
+import com.osroyale.content.counter.PlayerCounter;
 import com.osroyale.content.dailyeffect.DailyEffect;
 import com.osroyale.content.dailyeffect.impl.DailySlayerTaskSkip;
 import com.osroyale.content.dailyeffect.impl.DailySlayerTaskTeleport;
@@ -341,12 +343,20 @@ public class Player extends Mob {
     public final Set<String> hostList = new HashSet<>();
     public final TradingPost tradingPost = new TradingPost(this);
     public final Overrides overrides = new Overrides(this);
+    public final PlayerCounter playerCount = new PlayerCounter(this);
 
 
     public HashMap<ActivityLog, Integer> loggedActivities = new HashMap<ActivityLog, Integer>(ActivityLog.values().length) {
         {
             for (final ActivityLog achievement : ActivityLog.values())
                 put(achievement, 0);
+        }
+    };
+
+    public HashMap<PlayerCount, Integer> playerCounters = new HashMap<>(PlayerCount.values().length) {
+        {
+            for (final PlayerCount counter : PlayerCount.values())
+                put(counter, 0);
         }
     };
 

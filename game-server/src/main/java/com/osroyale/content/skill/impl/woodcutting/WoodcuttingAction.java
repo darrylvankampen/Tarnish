@@ -5,6 +5,7 @@ import com.osroyale.content.achievement.AchievementHandler;
 import com.osroyale.content.achievement.AchievementKey;
 import com.osroyale.content.activity.randomevent.RandomEventHandler;
 import com.osroyale.content.clanchannel.content.ClanTaskKey;
+import com.osroyale.content.counter.PlayerCount;
 import com.osroyale.content.pet.PetData;
 import com.osroyale.content.pet.Pets;
 import com.osroyale.content.prestige.PrestigePerk;
@@ -23,6 +24,7 @@ import com.osroyale.game.world.position.Area;
 import com.osroyale.net.packet.out.SendMessage;
 import com.osroyale.util.RandomUtils;
 import com.osroyale.util.Utility;
+import com.sun.source.tree.Tree;
 
 import java.util.Optional;
 
@@ -80,6 +82,7 @@ public class WoodcuttingAction extends SkillIdAction<Player> {
                 getMob().inventory.add(tree.item, 1);
             }
 
+            handleCounter();
             if (tree == TreeData.WILLOW_TREE || tree == TreeData.WILLOW_TREE1) {
                 getMob().forClan(channel -> channel.activateTask(ClanTaskKey.CHOP_WILLOW_LOG, getMob().getName()));
             } else if (tree == TreeData.YEW_TREE) {
@@ -97,6 +100,26 @@ public class WoodcuttingAction extends SkillIdAction<Player> {
                 }
             }
         return true;
+    }
+
+    private void handleCounter() {
+        if (tree == TreeData.NORMAL_TREE ||
+                tree == TreeData.DYING_TREE ||
+                tree == TreeData.DEAD_TREE) {
+            getMob().playerCount.add(PlayerCount.WC_REGULAR);
+            return;
+        }
+
+        switch (tree) {
+            case OAK_TREE -> getMob().playerCount.add(PlayerCount.WC_OAK);
+            case WILLOW_TREE -> getMob().playerCount.add(PlayerCount.WC_WILLOW);
+            case TEAK_TREE -> getMob().playerCount.add(PlayerCount.WC_TEAK);
+            case MAPLE_TREE -> getMob().playerCount.add(PlayerCount.WC_MAPLE);
+            case MAHOGANY_TREE -> getMob().playerCount.add(PlayerCount.WC_MAHOGANY);
+            case YEW_TREE -> getMob().playerCount.add(PlayerCount.WC_YEW);
+            case MAGIC_TREE -> getMob().playerCount.add(PlayerCount.WC_MAGIC);
+            case REDWOOD_TREE -> getMob().playerCount.add(PlayerCount.WC_REDWOOD);
+        }
     }
 
     @Override

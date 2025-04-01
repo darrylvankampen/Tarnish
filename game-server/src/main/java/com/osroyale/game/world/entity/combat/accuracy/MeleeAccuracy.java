@@ -47,7 +47,7 @@ public class MeleeAccuracy {
             defenceLevel += 9;
         }
 
-        return defenceLevel * (defenceBonus + 64);
+        return defenceLevel * (defenceBonus + 64D);
     }
 
     public static double getAttackRoll(Mob attacker) {

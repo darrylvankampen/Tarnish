@@ -12,6 +12,7 @@ import com.osroyale.content.activity.impl.duelarena.DuelRule;
 import com.osroyale.content.clanchannel.ClanRepository;
 import com.osroyale.content.clanchannel.channel.ClanChannel;
 import com.osroyale.content.clanchannel.content.ClanMemberComporator;
+import com.osroyale.content.counter.PlayerCount;
 import com.osroyale.content.dailyeffect.impl.DailySlayerTaskSkip;
 import com.osroyale.content.dailyeffect.impl.DailySlayerTaskTeleport;
 import com.osroyale.content.dailyeffect.impl.DailySpellBookSwap;
@@ -1659,6 +1660,20 @@ public final class PlayerPersistFile implements PlayerPersistable {
                 @Override
                 Object write(Player player) {
                     return gson().toJsonTree(player.loggedActivities, new TypeToken<HashMap<ActivityLog, Integer>>() {
+                    }.getType());
+                }
+            },
+
+            new PlayerJSONProperty("counters") {
+                @Override
+                void read(Player player, JsonElement property) {
+                    player.playerCounters = gson().fromJson(property, new TypeToken<HashMap<PlayerCount, Integer>>() {
+                    }.getType());
+                }
+
+                @Override
+                Object write(Player player) {
+                    return gson().toJsonTree(player.playerCounters, new TypeToken<HashMap<PlayerCount, Integer>>() {
                     }.getType());
                 }
             },

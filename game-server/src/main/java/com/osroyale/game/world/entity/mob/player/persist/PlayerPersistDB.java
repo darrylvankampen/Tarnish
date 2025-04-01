@@ -12,6 +12,7 @@ import com.osroyale.content.activity.impl.duelarena.DuelRule;
 import com.osroyale.content.clanchannel.ClanRepository;
 import com.osroyale.content.clanchannel.channel.ClanChannel;
 import com.osroyale.content.clanchannel.content.ClanMemberComporator;
+import com.osroyale.content.counter.PlayerCount;
 import com.osroyale.content.dailyeffect.impl.DailySlayerTaskSkip;
 import com.osroyale.content.dailyeffect.impl.DailySlayerTaskTeleport;
 import com.osroyale.content.dailyeffect.impl.DailySpellBookSwap;
@@ -1484,6 +1485,28 @@ public final class PlayerPersistDB implements PlayerPersistable {
                 Object write(Player player) {
                     JsonObject object = new JsonObject();
                     player.loggedActivities.forEach((key, val) -> object.addProperty(key.name(), val));
+                    return object;
+                }
+            },
+
+            new PlayerJSONProperty("counters") {
+                @Override
+                void read(Player player, JsonElement property) {
+                    JsonObject obj = property.getAsJsonObject();
+                    for (Entry<String, JsonElement> entry : obj.entrySet()) {
+                        final String prop = entry.getKey();
+                        try {
+                            PlayerCount key = PlayerCount.valueOf(prop);
+                            int val = obj.get(prop).getAsInt();
+                            player.playerCounters.put(key, val);
+                        } catch (IllegalArgumentException ignored) {}
+                    }
+                }
+
+                @Override
+                Object write(Player player) {
+                    JsonObject object = new JsonObject();
+                    player.playerCounters.forEach((key, val) -> object.addProperty(key.name(), val));
                     return object;
                 }
             },
